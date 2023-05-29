@@ -23,8 +23,8 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // конфигурируем работу Spring Security
-//.csrf().disable() // отключаем защиту от межсайтовой подделки запросов
-        http
+//.csrf().disable() // отключаем защиту от межсайтовой подделки запросов ДЛЯ ОБРАБОТКИ LOGOUT
+        http.csrf().disable()
                 .authorizeHttpRequests() // указываем что все страницы должны быть защищены аутентификацией
                 .requestMatchers("/admin").hasRole("ADMIN") // указываем на то что страница /admin доступна пользователю с ролью ADMIN
                 // указываем что не аутентифицированные пользователя могут зайти на страницу аутентификации и на объект ошибки

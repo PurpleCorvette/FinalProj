@@ -3,11 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <title>Регистрация</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+    }
+
+    form {
+      background-color: #fff;
+      width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    }
+
+    h3 {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    label {
+      display: inline-block;
+      width: 100px;
+      margin-bottom: 10px;
+    }
+
+    input[type=text],
+    input[type=password] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #f1f1f1;
+    }
+
+    input[type=submit] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+      background-color: #3e8e41;
+    }
+
+    div[th:if] {
+      max-width: 300px;
+      margin-left: 105px;
+      margin-bottom: 10px;
+    }
+
+    a {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <h3>Регистрация</h3>
 <form method="post" th:action="@{/registration}" th:object="${person}">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+  <!--  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
   <label for="login">Введите логин: </label>
   <input type="text" th:field="*{login}" id="login">
   <div style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
@@ -21,4 +82,3 @@
 <a href="/authentication">Вход</a>
 </body>
 </html>
-

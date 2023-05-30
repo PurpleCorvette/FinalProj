@@ -3,24 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <title>Личный кабинет администратора</title>
+
+  <!-- подключение Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-DziyXIJS6PshwTc+/Pd24O9gCfphcwUB3kiD+L/iMLHQz/w+oTkLvjlXMMT7jqR6" crossorigin="anonymous">
+
+  <!-- добавление стилей -->
+  <style>
+    h1 {
+      margin-top: 20px;
+    }
+    form {
+      display: inline-block;
+      margin: 10px;
+    }
+    hr {
+      margin: 20px;
+    }
+    p {
+      margin-bottom: 5px;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+      margin: 0px 10px;
+    }
+    a:hover {
+      color: #0056b3;
+    }
+    div {
+      border: 1px solid black;
+      box-shadow: 2px 2px 5px lightgray;
+    }
+  </style>
+
 </head>
 <body>
 <h1>Личный кабинет администратора</h1>
 <form method="post" action="/logout">
-  <button type="submit">Выйти из личного кабинета</button>
+  <button type="submit" class="btn btn-danger">Выйти из личного кабинета</button>
 </form>
-<a href="admin/product/add">Добавить товар</a>
+<form method="post" action="/admin/orders">
+  <button type="submit" class="btn btn-primary">Заказы других пользователей</button>
+</form>
+
 <hr>
-<div th:each="product : ${products}">
-  <p th:text="'Наименование: ' + ${product.getTitle()}"></p>
-  <p th:text="'Описание: ' + ${product.getDescription()}"></p>
-  <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-  <p th:text="'Cклад: ' + ${product.getWarehouse()}"></p>
-  <p th:text="'Продавец: ' + ${product.getSeller()}"></p>
-  <p th:text="'Категория: ' + ${product.getCategory().getName()}"></p>
-  <a th:href="@{/admin/product/edit/{id}(id=${product.getId()})}">Редактирование товара</a>
-  <a th:href="@{/admin/product/delete/{id}(id=${product.getId()})}">Удаление товара</a>
-  <hr>
+
+<div class="container">
+  <div th:each="product : ${products}">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title" th:text="${product.getTitle()}">Заголовок</h5>
+        <p class="card-text" th:text="${product.getDescription()}">Описание товара</p>
+        <p class="card-text" th:text="'Цена: ' + ${product.getPrice()}">Цена: 100 руб.</p>
+        <p class="card-text" th:text="'Cклад: ' + ${product.getWarehouse()}">Склад: 10 ед.</p>
+        <p class="card-text" th:text="'Продавец: ' + ${product.getSeller()}">Продавец: Иванов Сергей</p>
+        <p class="card-text" th:text="'Категория: ' + ${product.getCategory().getName()}">Категория: Техника</p>
+        <a th:href="@{/admin/product/edit/{id}(id=${product.getId()})}" class="card-link">Редактирование товара</a>
+        <a th:href="@{/admin/product/delete/{id}(id=${product.getId()})}" class="card-link">Удаление товара</a>
+      </div>
+    </div>
+    <hr>
+  </div>
 </div>
+
+<!-- подключение bootstrap js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper-base.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+jpDv/aCXa7jJjIqQIxTF+6v78Grh1LQVJMIlG" crossorigin="anonymous"></script>
 </body>
 </html>

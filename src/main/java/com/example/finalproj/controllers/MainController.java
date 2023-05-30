@@ -80,7 +80,7 @@ public class MainController {
     @GetMapping("/person account/product/info/{id}")
     public String infoProduct(@PathVariable("id") int id, Model model){
         model.addAttribute("product", productService.getProductId(id));
-        return "redirect:/user/infoProduct";
+        return "user/infoProduct";
     }
 
     @PostMapping("/person account/product/search")
@@ -209,7 +209,7 @@ public class MainController {
 
         String uuid = UUID.randomUUID().toString();
         for(Product product : productList){
-            Order newOrder = new Order(uuid, product, personDetails.getPerson(), 1, product.getPrice(), Status.Оформлен);
+            Order newOrder = new Order(uuid, product, personDetails.getPerson(), 1, product.getPrice(), Status.CONFIRMED);
             orderRepository.save(newOrder);
             cartRepository.deleteCartByProductId(product.getId());
         }
@@ -224,6 +224,4 @@ public class MainController {
         model.addAttribute("orders", orderList);
         return "/user/orders";
     }
-
-
 }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin-top: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        select {
+            font-size: inherit;
+            padding: 5px 10px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        a:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Users</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Login</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="person : ${people}">
+        <td th:text="${person.getId()}"></td>
+        <td th:text="${person.getLogin()}"></td>
+        <td>
+            <form method="post" th:action="@{/users/update-role}">
+                <input type="hidden" name="id" th:value="${person.id}" />
+                <select name="role" th:onchange="this.form.submit()">
+                    <option value="USER" th:selected="${person.role == 'USER'}">User</option>
+                    <option value="ADMIN" th:selected="${person.role == 'ADMIN'}">Admin</option>
+                </select>
+            </form>
+        </td>
+        <td><a th:href="@{/users/edit/{id}(id=${person.id})}">Edit</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+</html>

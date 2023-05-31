@@ -3,17 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <title>Заказы</title>
+  <!-- добавлены стили Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
 </head>
 <body>
-<h3>Заказы</h3>
-<div th:each="order : ${orders}">
-  <h3 th:text="'Заказ №' + ${order.getNumber()}"></h3>
-  <img th:src="'/img/' + ${order.getProduct().getImageList()[0].getFileName()}" width="300px">
-  <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}">
-  <p th:text="'Количество: ' + ${order.getCount()}">
-  <p th:text="'Цена: ' + ${order.getPrice()}">
-  <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
-  <p th:text="'Cтатус: ' + ${order.getStatus()}">
+<div class="container">
+  <h3 class="text-center my-5">Список заказов</h3>
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>№ заказа</th>
+          <th>Продукт</th>
+          <th>Количество</th>
+          <th>Цена</th>
+          <th>Дата</th>
+          <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+          <td th:text="${order.getNumber()}"></td>
+          <td>
+            <img th:src="'/img/' + ${order.getProduct().getImageList()[0].getFileName()}" width="100">
+            <p class="mt-2" th:text="${order.getProduct().getTitle()}"></p>
+          </td>
+          <td th:text="${order.getCount()}"></td>
+          <td th:text="${order.getPrice()}"></td>
+          <td th:text="${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></td>
+          <td th:text="${order.getStatus()}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+<!-- добавлены скрипты Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abKJXWIlMfwMwwWS6y5LQea/c9adfcLdR4HD7T9jtxI8jSK0"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNVQ8c9"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

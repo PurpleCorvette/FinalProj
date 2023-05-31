@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
@@ -166,14 +167,15 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-//    ТРИ МЕТОДА НИЖЕ - ВЕРНЫЕ
-    @PostMapping ("/admin/orders")
+    //    ТРИ МЕТОДА НИЖЕ - ВЕРНЫЕ
+    @PostMapping("/admin/orders")
     public String showOrders(Model model) {
         List<Order> orders = orderRepository.findAll();
         model.addAttribute("orders", orders);
         model.addAttribute("statuses", Status.values());
         return "admin/orders";
     }
+
     @GetMapping("/ordersByNumber/{number}")
     public String showUserOrders(@PathVariable String number, Model model) {
         List<Order> orders = orderRepository.findByNumber(number);
@@ -221,5 +223,76 @@ public class AdminController {
         model.addAttribute("orders", orders);
         model.addAttribute("statuses", Status.values());
         return "admin/orders";
+    }
+
+
+    //Контроллеры для вывода пользователей и смены их ролей
+//    @GetMapping("/admin/users")
+//    public String getUsers(Model model) {
+//        List<Person> users = personRepository.findAll();
+//        model.addAttribute("users", users);
+//        return "/admin/users";
+//    }
+//
+//    // Метод изменения роли пользователя на admin
+//    @PostMapping("/admin/user/makeadmin/{id}")
+//    public String makeUserAdmin(@PathVariable("id") int id) {
+//        Person user = personRepository.findById(id).orElseThrow();
+//        user.setRole("ADMIN");
+//        personRepository.save(user);
+//        return "redirect:/admin/users";
+//    }
+//
+//    @PostMapping("/admin/user/makeuser/{id}")
+//    public String makeUserUser(@PathVariable("id") int id) {
+//        Person user = personRepository.findById(id).orElseThrow();
+//        user.setRole("USER");
+//        personRepository.save(user);
+//        return "redirect:/admin/users";
+//    }
+//    @GetMapping
+//    public ModelAndView userList() {
+//        List<Person> users = personRepository.findAll();
+//        ModelAndView modelAndView = new ModelAndView("admin/users");
+//        modelAndView.addObject("users", users);
+//        return modelAndView;
+//    }
+//    @PostMapping("/change-role")
+//    public String changeUserRole(@RequestParam int id, @RequestParam String newRole) {
+//        Person user = personRepository.findById(id).orElse(null);
+//        if (user != null) {
+//            user.setRole(newRole);
+//            personRepository.save(user);
+//        }
+//        return "redirect:/users";
+//    }
+
+    // НОРМ
+//    @GetMapping("admin/users")
+//    public String getAllUsers(Model model) {
+//        List<Person> userList = personRepository.findAll();
+//        model.addAttribute("users", userList);
+//        return "admin/all_users";
+//    }
+    @PostMapping("/admin/users/update-role")
+    public String updateUserRole(@RequestParam int id, @RequestParam String role) {
+        // обновляем запись в базе данных
+        Optional<Person> personOptional = personRepository.findById(id);
+
+        if (personOptional.isPresent()) {
+            Person person = personOptional.get();
+            person.setRole(role);
+            personRepository.save(person);
+        }
+
+        // перенаправляем пользователя на страницу со списком пользователей
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/admin/users")
+    public String showAllUsers(Model model) {
+        List<Person> people = personRepository.findAll();
+        model.addAttribute("people", people);
+        return "admin/users";
     }
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказы</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <form method="GET" action="@{/admin/orders}">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="search" placeholder="Введите номер заказа">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Найти заказ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h1>Заказы</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Номер заказа</th>
+            <th>Продукт</th>
+            <th>Количество</th>
+            <th>Стоимость</th>
+            <th>Дата заказа</th>
+            <th>Статус заказа</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.number}"></td>
+            <td th:text="${order.product.title}"></td>
+            <td th:text="${order.count}"></td>
+            <td th:text="${order.price}"></td>
+            <td th:text="${order.dateTime}"></td>
+            <td>
+                <form th:action="@{/admin/update-order-status}" method="POST">
+                    <input type="hidden" name="orderId" th:value="${order.id}"/>
+                    <select name="status" class="form-control" th:value="${order.status}">
+                        <option th:each="status : ${statuses}" th:value="${status}" th:text="${status.displayName}">
+                        </option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Изменить статус</button>
+                </form>
+            </td>
+            <td>
+                <a th:href="@{/admin/ordersByNumber/{number}(number=${order.number})}"
+                   class="btn btn-secondary">Показать все заказы с номером</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <span th:if="${param.successMessage}" th:text="${param.successMessage}" class="text-success"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

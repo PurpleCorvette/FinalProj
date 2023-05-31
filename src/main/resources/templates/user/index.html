@@ -1,73 +1,135 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <title>Главная страница</title>
+
+  <!-- Подключение Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- Подключение стилей -->
+  <style>
+    body {
+      margin: 20px;
+    }
+
+    img {
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    form {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  </style>
 </head>
+
 <body>
 <form method="post" action="/logout">
-  <button type="submit">Выйти из личного кабинета</button>
+  <button type="submit" class="btn btn-secondary">Выйти из личного кабинета</button>
 </form>
 <br>
 <form method="get" th:action="@{/cart}">
-  <button type="submit">Корзина</button>
+  <button type="submit" class="btn btn-secondary">Корзина</button>
 </form>
 <br>
 <form method="get" th:action="@{/orders}">
-  <input type="submit" value="Заказы">
+  <button type="submit" class="btn btn-secondary">Заказы</button>
 </form>
 <h1>Личный кабинет</h1>
-<h3>Cортировка, поиск, фильтрация</h3>
+<h3>Сортировка, поиск, фильтрация</h3>
 <form th:method="POST" th:action="@{/person account/product/search}">
   <fieldset>
     <legend>Выберите параметры для сортировки, поиска, фильтрации:</legend>
-    <label for="search">Поиск по наименованию</label>
-    <input type="text" id="search" name="search" th:value="*{value_search}">
-    <br>
-    <p>Цена, P</p>
-    <label for="ot">От</label>
-    <input type="text" name="ot" id="ot" th:value="*{value_price_ot}">
-    <label for="do">До</label>
-    <input type="text" name="do" id="do" th:value="*{value_price_do}">
-    <br>
-    <br>
-    <div>
-      <input type="radio" id="ascending_price" name="price" value="sorted_by_ascending_price">
-      <label for="ascending_price">Отсортировать по возрастанию цены</label>
-      <input type="radio" id="descending_price" name="price"
-             value="sorted_by_descending_price">
-      <label for="descending_price">Отсортировать по убыванию цены</label>
-      <p>Категория товаров: </p>
-      <input type="radio" id="tents" name="contract" value="tents">
-      <label for="tents">Палатки</label>
-      <input type="radio" id="sleeper" name="contract" value="sleeper">
-      <label for="sleeper">Спальники</label>
-      <input type="radio" id="bags" name="contract" value="bags">
-      <label for="bags">Рюкзаки</label>
-      <br>
-      <br>
-      <input type="submit" value="Найти">
+    <div class="form-group">
+      <label for="search">Поиск по наименованию</label>
+      <input type="text" id="search" name="search" class="form-control" th:value="*{value_search}">
     </div>
+    <div class="form-group">
+      <p>Цена, P</p>
+      <label for="ot">От</label>
+      <input type="text" name="ot" id="ot" class="form-control" th:value="*{value_price_ot}">
+      <label for="do">До</label>
+      <input type="text" name="do" id="do" class="form-control" th:value="*{value_price_do}">
+    </div>
+    <div>
+      <p>Сортировка по цене</p>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="price" id="ascending_price" value="sorted_by_ascending_price">
+        <label class="form-check-label" for="ascending_price">Отсортировать по возрастанию цены</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="price" id="descending_price" value="sorted_by_descending_price">
+        <label class="form-check-label" for="descending_price">Отсортировать по убыванию цены</label>
+      </div>
+    </div>
+    <div>
+      <p>Категория товаров</p>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="contract" id="tents" value="tents">
+        <label class="form-check-label" for="tents">Палатки</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="contract" id="sleeper" value="sleeper">
+        <label class="form-check-label" for="sleeper">Спальники</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="contract" id="bags" value="bags">
+        <label class="form-check-label" for="bags">Рюкзаки</label>
+      </div>
+    </div>
+    <br>
+    <br>
+    <input type="submit" class="btn btn-primary" value="Найти">
   </fieldset>
 </form>
 <hr>
-<h3>Результат поиска, cортировки, фильтрации</h3>
-<div th:each="product : ${search_product}">
-  <img th:src="'/img/' + ${product.imageList[0].getFileName()}" width="300px">
-  <br>
-  <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}"></a>
-  <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-  <hr>
+<h3>Результат поиска, сортировки, фильтрации</h3>
+<div class="row">
+  <div th:each="product : ${search_product}" class="col-sm-6 col-md-4">
+    <div class="card">
+      <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title" th:text="${product.getTitle()}"></h5>
+        <p class="card-text" th:text="'Цена: ' + ${product.getPrice()}"></p>
+        <a th:href="@{/product/info/{id}(id=${product.getId()})}"class="btn btn-primary">Подробнее</a>
+      </div>
+    </div>
+  </div>
 </div>
+
 <hr>
-<h3>Доступные товары: </h3>
-<div th:each="product : ${products}">
-  <img th:src="'/img/' + ${product.imageList[0].getFileName()}" width="300px">
-  <br>
-  <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}"></a>
-  <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-  <a th:href="@{/cart/add/{id}(id=${product.getId()})}">Добавить товар в корзину</a>
-  <hr>
+<h3>Доступные товары:</h3>
+<div class="row">
+  <div th:each="product : ${products}" class="col-sm-6 col-md-4">
+    <div class="card">
+      <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title" th:text="${product.getTitle()}"></h5>
+        <p class="card-text" th:text="'Цена: ' + ${product.getPrice()}"></p>
+        <a th:href="@{/product/info/{id}(id=${product.getId()})}" class="btn btn-primary">Подробнее</a>
+        <a th:href="@{/cart/add/{id}(id=${product.getId()})}" class="btn btn-success">Добавить в корзину</a>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Подключение Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi+UwoJ" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1REkJQUtg9S0nHjuEWNLeEpIzp+0FaGp/FA/nVTzP1" crossorigin="anonymous">
+</script>
 </body>
+
 </html>

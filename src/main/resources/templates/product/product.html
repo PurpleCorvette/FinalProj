@@ -3,6 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Cписок товаров</title>
+    <!-- добавляем ссылку на стили Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-DmY9WuD1t22Ub6FdLhCeGzK7U2JSDnEg6wFkM5IlIvBsf4XTsks2rMk3VlXaUkEx"
+          crossorigin="anonymous">
+    <style>
+        body {
+            margin: 50px;
+            font-size: 18px;
+        }
+        h1, h3 {
+            text-align: center;
+        }
+        legend {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+        img {
+            width: 800px;
+            height: 700px;
+        }
+    </style>
 </head>
 <body>
 <h1>Главная страница магазина</h1>
@@ -10,52 +32,83 @@
 <form th:method="POST" th:action="@{/product/search}">
     <fieldset>
         <legend>Выберите параметры для сортировки, поиска, фильтрации:</legend>
-        <label for="search">Поиск по наименованию</label>
-        <input type="text" id="search" name="search" th:value="*{value_search}">
-        <br>
+        <div class="form-group">
+            <label for="search">Поиск по наименованию</label>
+            <input type="text" id="search" name="search" th:value="*{value_search}" class="form-control">
+        </div>
         <p>Цена, P</p>
-        <label for="ot">От</label>
-        <input type="text" name="ot" id="ot" th:value="*{value_price_ot}">
-        <label for="do">До</label>
-        <input type="text" name="do" id="do" th:value="*{value_price_do}">
-        <br>
+        <div class="form-row">
+            <div class="col">
+                <input type="text" name="ot" id="ot" th:value="*{value_price_ot}" class="form-control">
+            </div>
+            <div class="col">
+                <input type="text" name="do" id="do" th:value="*{value_price_do}" class="form-control">
+            </div>
+        </div>
         <br>
         <div>
-            <input type="radio" id="ascending_price" name="price" value="sorted_by_ascending_price">
-            <label for="ascending_price">Отсортировать по возрастанию цены</label>
-            <input type="radio" id="descending_price" name="price"
-                   value="sorted_by_descending_price">
-            <label for="descending_price">Отсортировать по убыванию цены</label>
+            <div class="form-check">
+                <input type="radio" id="ascending_price" name="price" value="sorted_by_ascending_price"
+                       class="form-check-input">
+                <label for="ascending_price" class="form-check-label">Отсортировать по возрастанию цены</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="descending_price" name="price" value="sorted_by_descending_price"
+                       class="form-check-input">
+                <label for="descending_price" class="form-check-label">Отсортировать по убыванию цены</label>
+            </div>
             <p>Категория товаров: </p>
-            <input type="radio" id="tents" name="contract" value="tents">
-            <label for="tents">Палатки</label>
-            <input type="radio" id="sleeper" name="contract" value="sleeper">
-            <label for="sleeper">Спальники</label>
-            <input type="radio" id="bags" name="contract" value="bags">
-            <label for="bags">Спальники</label>
+            <div class="form-check">
+                <input type="radio" id="tents" name="contract" value="tents" class="form-check-input">
+                <label for="tents" class="form-check-label">Палатки</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="sleeper" name="contract" value="sleeper" class="form-check-input">
+                <label for="sleeper" class="form-check-label">Спальники</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="bags" name="contract" value="bags" class="form-check-input">
+                <label for="bags" class="form-check-label">Рюкзаки</label>
+            </div>
             <br>
             <br>
-            <input type="submit" value="Найти">
+            <button type="submit" class="btn btn-primary">Найти</button>
         </div>
     </fieldset>
 </form>
 <hr>
 <h3>Результат поиска, cортировки, фильтрации</h3>
 <div th:each="product : ${search_product}">
-    <img th:src="'/img/' + ${product.imageList[0].getFileName()}" width="300px">
-    <br>
-    <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}"></a>
-    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-    <hr>
+    <div class="card mb-3">
+        <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${product.getTitle()}"></h5>
+            <p class="card-text" th:text="'Цена: ' + ${product.getPrice()} + 'р'"></p>
+            <a th:href="@{/product/info/{id}(id=${product.getId()})}" class="btn btn-primary">Подробнее</a>
+        </div>
+    </div>
 </div>
 <hr>
 <h3>Доступные товары: </h3>
 <div th:each="product : ${products}">
-    <img th:src="'/img/' + ${product.imageList[0].getFileName()}" width="300px">
-    <br>
-    <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}"></a>
-    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-    <hr>
+    <div class="card mb-3">
+        <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${product.getTitle()}"></h5>
+            <p class="card-text" th:text="'Цена: ' + ${product.getPrice()} + 'р'"></p>
+            <a th:href="@{/product/info/{id}(id=${product.getId()})}" class="btn btn-primary">Подробнее</a>
+        </div>
+    </div>
 </div>
+<!-- добавляем ссылку на скрипты Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldb9GNnXWwa3RpqpfDliOc6912tM2a0StmOmNhX"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU4Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75jXrmK+y19Xa"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -3,42 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <title>Добавление товара</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h3 {
+      color: navy;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"], textarea, select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 400px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+      margin-right: 10px;
+    }
+
+    input[type="submit"] {
+      background-color: navy;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: darkblue;
+    }
+
+    div[th:if] {
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    p[style="color: red"] {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  </style>
 </head>
 <body>
 <h3>Добавление товара</h3>
 <form th:method="POST" th:action="@{/admin/product/add}" th:object="${product}" enctype="multipart/form-data">
   <label for="title">Введите наименование товара: </label>
   <input type="text" th:field="*{title}" placeholder="Наименование" id="title">
-  <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+  <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
   <br>
   <br>
   <label for="description">Введите описание товара: </label>
   <textarea th:field="*{description}" placeholder="Описание" id="description"></textarea>
-  <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+  <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
   <br>
   <br>
   <label for="price">Введите цену товара: </label>
   <input type="number" th:field="*{price}" min="1" step="0.00" placeholder="Цена" id="price">
-  <div style="color: red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+  <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
   <br>
   <br>
   <label for="warehouse">Введите cклад, на котором расположен товар: </label>
   <input type="text" th:field="*{warehouse}" placeholder="Cклад" id="warehouse">
-  <div style="color: red" th:if="${#fields.hasErrors('warehouse')}" th:errors="*{warehouse}"></div>
+  <div th:if="${#fields.hasErrors('warehouse')}" th:errors="*{warehouse}"></div>
   <br>
   <br>
   <label for="category">Выберите категорию товара: </label>
   <select name="category" th:field="*{category}" id="category">
     <div th:each="element : ${category}">
-      <option th:text="${element.getName()}" th:value="${element.getId()}">
+      <option th:text="${element.getName()}" th:value="${element.getId()}"></option>
     </div>
   </select>
-  <div style="color: red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+  <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
   <br>
   <br>
   <label for="seller">Введите данные о продавце: </label>
   <textarea th:field="*{seller}" placeholder="Продавец" id="seller"></textarea>
-  <div style="color: red" th:if="${#fields.hasErrors('seller')}" th:errors="*{seller}"></div>
+  <div th:if="${#fields.hasErrors('seller')}" th:errors="*{seller}"></div>
   <br>
   <br>
   <p style="color: red">Вы можете добавить до 5 фотографий. Первая фотография не может быть пустой т.к они будет являтся главной при выводе карточки товара</p>

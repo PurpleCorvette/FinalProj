@@ -184,15 +184,6 @@ public class AdminController {
         model.addAttribute("statuses", Status.values()); // добавляем список статусов
         return "admin/orders-by-number";
     }
-//    @PostMapping("/admin/update-order-status")
-//    public String updateOrderStatus(@RequestParam(name = "orderId") int id,
-//                                    @RequestParam(name = "status") Status status) {
-//        Order order = orderRepository.findById(id).orElseThrow(() ->
-//                new IllegalArgumentException("Invalid order Id:" + id));
-//        order.setStatus(status);
-//        orderRepository.save(order);
-//        return "redirect:/admin/orders"; // переадресация на список заказов
-//    }
 
     // Для изменения статуса заказа, оставяясь на это же странице
     @RequestMapping(value = "/admin/update-order-status", method = RequestMethod.POST)
@@ -226,54 +217,6 @@ public class AdminController {
     }
 
 
-    //Контроллеры для вывода пользователей и смены их ролей
-//    @GetMapping("/admin/users")
-//    public String getUsers(Model model) {
-//        List<Person> users = personRepository.findAll();
-//        model.addAttribute("users", users);
-//        return "/admin/users";
-//    }
-//
-//    // Метод изменения роли пользователя на admin
-//    @PostMapping("/admin/user/makeadmin/{id}")
-//    public String makeUserAdmin(@PathVariable("id") int id) {
-//        Person user = personRepository.findById(id).orElseThrow();
-//        user.setRole("ADMIN");
-//        personRepository.save(user);
-//        return "redirect:/admin/users";
-//    }
-//
-//    @PostMapping("/admin/user/makeuser/{id}")
-//    public String makeUserUser(@PathVariable("id") int id) {
-//        Person user = personRepository.findById(id).orElseThrow();
-//        user.setRole("USER");
-//        personRepository.save(user);
-//        return "redirect:/admin/users";
-//    }
-//    @GetMapping
-//    public ModelAndView userList() {
-//        List<Person> users = personRepository.findAll();
-//        ModelAndView modelAndView = new ModelAndView("admin/users");
-//        modelAndView.addObject("users", users);
-//        return modelAndView;
-//    }
-//    @PostMapping("/change-role")
-//    public String changeUserRole(@RequestParam int id, @RequestParam String newRole) {
-//        Person user = personRepository.findById(id).orElse(null);
-//        if (user != null) {
-//            user.setRole(newRole);
-//            personRepository.save(user);
-//        }
-//        return "redirect:/users";
-//    }
-
-    // НОРМ
-//    @GetMapping("admin/users")
-//    public String getAllUsers(Model model) {
-//        List<Person> userList = personRepository.findAll();
-//        model.addAttribute("users", userList);
-//        return "admin/all_users";
-//    }
     @PostMapping("/admin/users/update-role")
     public String updateUserRole(@RequestParam int id, @RequestParam String role) {
         // обновляем запись в базе данных
